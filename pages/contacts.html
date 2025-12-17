@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Контакты - Портфолио</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body class="bg-light">
+<a href="#main" class="skip-link">Перейти к основному содержимому</a>
+<script>
+    // Скрипт для доступности Tab/Space
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // 1. Добавляем skip link
+        if (!document.querySelector('.skip-link')) {
+            const skipLink = document.createElement('a');
+            skipLink.href = '#main';
+            skipLink.className = 'skip-link';
+            skipLink.textContent = 'Перейти к контенту (Tab)';
+            skipLink.tabIndex = 0;
+            document.body.insertBefore(skipLink, document.body.firstChild);
+        }
+        
+        // 2. Обработка Space для карточек проектов и кнопок
+        document.addEventListener('keydown', function(e) {
+            const target = e.target;
+            
+            // Если нажат Space
+            if (e.key === ' ' || e.key === 'Spacebar') {
+                
+                // Для карточек проектов
+                if (target.classList.contains('project-card') || 
+                    target.classList.contains('card') ||
+                    target.getAttribute('role') === 'button') {
+                    e.preventDefault(); // Предотвращаем прокрутку
+                    target.click(); // Кликаем
+                    target.focus(); // Оставляем фокус
+                }
+                
+                // Для навигационных ссылок
+                if (target.classList.contains('nav-link')) {
+                    e.preventDefault();
+                    target.click();
+                }
+            }
+            
+            // Если нажат Enter на карточке
+            if (e.key === 'Enter') {
+                if (target.classList.contains('project-card') || 
+                    target.classList.contains('card')) {
+                    target.click();
+                }
+            }
+        });
+        
+        // 3. Автоматически добавляем tabindex к карточкам проектов
+        document.querySelectorAll('.project-card, .card').forEach(card => {
+            if (!card.hasAttribute('tabindex') && !card.querySelector('a, button')) {
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.style.cursor = 'pointer';
+            }
+        });
+        
+        // 4. Ловушка фокуса для модальных окон Bootstrap
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.addEventListener('shown.bs.modal', function() {
+                const focusable = modal.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                
+                if (focusable.length > 0) {
+                    // Фокус на первый элемент
+                    focusable[0].focus();
+                    
+                    // Ловушка фокуса внутри модалки
+                    modal.addEventListener('keydown', function trapFocus(e) {
+                        if (e.key === 'Tab') {
+                            const first = focusable[0];
+                            const last = focusable[focusable.length - 1];
+                            
+                            if (e.shiftKey) {
+                                if (document.activeElement === first) {
+                                    e.preventDefault();
+                                    last.focus();
+                                }
+                            } else {
+                                if (document.activeElement === last) {
+                                    e.preventDefault();
+                                    first.focus();
+                                }
+                            }
+                        }
+                        
+                        // Закрытие по Escape
+                        if (e.key === 'Escape') {
+                            const modalInstance = bootstrap.Modal.getInstance(modal);
+                            if (modalInstance) {
+                                modalInstance.hide();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        
+        // 5. Улучшение навигации для мобильных
+        if (window.innerWidth <= 768) {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            if (navbarToggler) {
+                navbarToggler.setAttribute('aria-label', 'Открыть меню навигации');
+                
+                // При открытии меню - фокус на первую ссылку
+                navbarToggler.addEventListener('click', function() {
+                    setTimeout(() => {
+                        const firstNavLink = document.querySelector('.navbar-nav .nav-link');
+                        if (firstNavLink && document.querySelector('.navbar-collapse.show')) {
+                            firstNavLink.focus();
+                        }
+                    }, 300);
+                });
+            }
+        }
+        
+        // 6. Логический порядок Tab для главных элементов
+        const mainElements = [
+            '.skip-link',
+            '.navbar-toggler',
+            '.nav-link',
+            'h1 a',
+            '.btn-primary',
+            '.project-card',
+            'form input',
+            'form button',
+            'footer a'
+        ];
+        
+        // Просто проверяем что элементы доступны
+        mainElements.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach((el, index) => {
+                if (!el.hasAttribute('tabindex') && el.tabIndex === -1) {
+                    el.setAttribute('tabindex', '0');
+                }
+            });
+        });
+    });
+    </script>
+    <div class="container-fluid p-0">
+        <!-- Header -->
+        <header class="bg-primary text-white py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h1 class="h3 mb-1">Мой Портфолио</h1>
+                        <p class="mb-0 opacity-75">Студент разработчик</p>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge bg-light text-primary">ЭФБО-13-24</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">
+                                <i class="bi bi-house me-1"></i>Главная
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="projects.html">
+                                <i class="bi bi-folder me-1"></i>Проекты
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="diary.html">
+                                <i class="bi bi-journal me-1"></i>Дневник
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="contacts.html">
+                                <i class="bi bi-telephone me-1"></i>Контакты
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="container my-4">
+            <!-- Page Header -->
+            <section class="mb-5">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4 text-center">
+                        <h1 class="h2 text-primary mb-3">
+                            <i class="bi bi-telephone me-2"></i>Контакты
+                        </h1>
+                        <p class="text-muted mb-0">Свяжитесь со мной для сотрудничества</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="row g-4">
+                <!-- Contact Form -->
+                <div class="col-lg-8">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h3 class="card-title h5 mb-0">
+                                <i class="bi bi-envelope text-primary"></i>
+                                Форма обратной связи
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="contactForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="name" class="form-label">Имя *</label>
+                                        <input type="text" class="form-control" id="name" required>
+                                        <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email *</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                        <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Тема</label>
+                                    <input type="text" class="form-control" id="subject">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Сообщение *</label>
+                                    <textarea class="form-control" id="message" rows="5" required></textarea>
+                                    <div class="invalid-feedback">Пожалуйста, введите ваше сообщение</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-send me-1"></i>Отправить сообщение
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-lg-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h3 class="card-title h5 mb-0">
+                                <i class="bi bi-info-circle text-primary"></i>
+                                Контактная информация
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-envelope-fill text-primary me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted d-block">Email</small>
+                                    <span>karpenko.a.r@edu.mirea.ru</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-telephone-fill text-primary me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted d-block">Телефон</small>
+                                    <span>+7 (999) 123-45-67</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-github text-primary me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted d-block">GitHub</small>
+                                    <span>github.com/nyroxlfg</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-geo-alt-fill text-primary me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted d-block">Адрес</small>
+                                    <span>Россия, Москва, Проспект Вернадского, 78</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="card shadow-sm mt-4">
+                        <div class="card-header bg-light">
+                            <h3 class="card-title h5 mb-0">
+                                <i class="bi bi-people text-primary"></i>
+                                Социальные сети
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex gap-3">
+                                <a href="#" class="text-decoration-none">
+                                    <i class="bi bi-github fs-4"></i>
+                                </a>
+                                <a href="#" class="text-decoration-none">
+                                    <i class="bi bi-telegram fs-4 text-primary"></i>
+                                </a>
+                                <a href="#" class="text-decoration-none">
+                                    <i class="bi bi-vk fs-4 text-info"></i>
+                                </a>
+                                <a href="#" class="text-decoration-none">
+                                    <i class="bi bi-linkedin fs-4 text-primary"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-dark text-white py-4 mt-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0">&copy; 2025 Портфолио студента. Все права защищены.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="contacts.html" class="text-white text-decoration-none me-3">Контакты</a>
+                        <a href="#" class="text-white text-decoration-none">Политика конфиденциальности</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form validation
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (this.checkValidity()) {
+                alert('Сообщение отправлено!');
+                this.reset();
+            }
+            this.classList.add('was-validated');
+        });
+    </script>
+</body>
+</html>

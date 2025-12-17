@@ -1,0 +1,217 @@
+/* ========== АДАПТИВНОСТЬ И ДОСТУПНОСТЬ - БЕЗ ИЗМЕНЕНИЯ ДИЗАЙНА ========== */
+
+/* 1. Skip link для клавиатурной навигации (соответствует вашей теме) */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 10px;
+    background: var(--primary-color);
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 6px;
+    z-index: 9999;
+    font-weight: 500;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 10px;
+    outline: 3px solid var(--warning-color);
+    outline-offset: 2px;
+}
+
+/* 2. Видимый фокус для интерактивных элементов (в стиле Bootstrap) */
+:focus-visible {
+    outline: 2px solid var(--primary-color) !important;
+    outline-offset: 2px !important;
+}
+
+/* Улучшенный фокус для Bootstrap элементов */
+.btn:focus-visible,
+.nav-link:focus-visible,
+.navbar-toggler:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
+
+/* Фокус для карточек проектов */
+.project-card:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 3. Адаптивность для мобильных (576px и меньше) */
+@media (max-width: 576px) {
+    /* Уменьшаем шрифты заголовков */
+    .display-4 {
+        font-size: 1.75rem !important;
+    }
+    
+    h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    h2 {
+        font-size: 1.3rem !important;
+    }
+    
+    h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    /* Кнопки на всю ширину в мобильной версии */
+    .btn.mobile-full {
+        width: 100%;
+        margin-bottom: 10px !important;
+    }
+    
+    /* Увеличенные поля ввода для сенсорных экранов */
+    .form-control.mobile-large,
+    .form-select.mobile-large {
+        padding: 12px !important;
+        font-size: 16px !important;
+    }
+    
+    /* Карточки проектов на мобильных */
+    .project-card.mobile-stack {
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+}
+
+/* 4. Адаптивность для планшетов (от 577px до 768px) */
+@media (min-width: 577px) and (max-width: 768px) {
+    /* Адаптивные сетки для планшетов */
+    .tablet-grid-2 > * {
+        flex: 0 0 auto;
+        width: 50% !important;
+    }
+}
+
+/* 5. Для сенсорных устройств - минимальные размеры кликабельных областей */
+@media (pointer: coarse) {
+    .touch-target {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        padding: 12px 20px !important;
+    }
+}
+
+/* 6. Уважение к снижению движения (опционально) */
+@media (prefers-reduced-motion: reduce) {
+    .no-motion,
+    .no-motion * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 7. Гибкие изображения (если еще не добавлено) */
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 8. Исправление горизонтального скролла */
+.no-horizontal-scroll {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+/* 9. Улучшение мобильного меню Bootstrap */
+@media (max-width: 768px) {
+    /* Увеличение кнопки меню */
+    .navbar-toggler.mobile-large {
+        padding: 10px 14px;
+        font-size: 1.1rem;
+    }
+    
+    /* Увеличенные ссылки в мобильном меню */
+    .navbar-nav.mobile-large .nav-link {
+        padding: 15px !important;
+        font-size: 1.1rem;
+    }
+}
+
+/* 10. Печатные стили - только скрытие ненужных элементов */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-only {
+        display: block !important;
+    }
+    
+    /* Карточки без анимаций для печати */
+    .card,
+    .project-card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+}
+
+/* 11. Доступные скрытые элементы (для screen readers) */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* 12. Улучшение читаемости текста на мобильных */
+@media (max-width: 768px) {
+    .mobile-readable {
+        line-height: 1.6 !important;
+        font-size: 1rem !important;
+    }
+    
+    .mobile-heading {
+        letter-spacing: -0.02em !important;
+        line-height: 1.3 !important;
+    }
+}
+
+/* 13. Классы для ручного применения адаптивности */
+/* Эти классы нужно добавлять в HTML если нужны */
+
+/* Для мобильной версии */
+@media (max-width: 576px) {
+    .mobile-block {
+        display: block !important;
+        width: 100% !important;
+    }
+    
+    .mobile-text-center {
+        text-align: center !important;
+    }
+    
+    .mobile-hide {
+        display: none !important;
+    }
+    
+    .mobile-show {
+        display: block !important;
+    }
+}
+
+/* Для планшетов */
+@media (max-width: 768px) {
+    .tablet-block {
+        display: block !important;
+        width: 100% !important;
+    }
+    
+    .tablet-text-center {
+        text-align: center !important;
+    }
+}
