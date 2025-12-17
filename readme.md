@@ -1,2 +1,2 @@
 ссылка на сайт
-https://nyroxlfg.github.io/FRONTEND-AND-BACKEND-PRACTICE_13-14/
+https://nyroxlfg.github.io/FRONTEND-AND-BACKEND-PRACTICE_15-16/
